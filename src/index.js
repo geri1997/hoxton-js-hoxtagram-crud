@@ -18,9 +18,19 @@ function updateStateFromServer(){
     })
     
 }
-function createComment(comment, whereToAppend){
+function createComment(comment, whereToAppend,post){
     const commentLi = document.createElement('li')
     commentLi.textContent = comment.content
+    const dltBtn = document.createElement('button')
+    dltBtn.textContent = 'X'
+    dltBtn.addEventListener('click',e=>{
+        post.comments=post.comments.filter(stateComment=>
+                stateComment.id!==comment.id
+            )
+            renderPosts()
+            deleteCommentFromServer(comment.id)
+    })
+    commentLi.append(dltBtn)
     whereToAppend.append(commentLi)
 }
 
@@ -57,6 +67,15 @@ function createPost(post){
               body: JSON.stringify({likes:post.likes})
         })
     })
+    const dltBtn = document.createElement('button')
+    dltBtn.textContent = 'X'
+    dltBtn.addEventListener('click',e=>{
+        state.images=state.images.filter(statePost=>
+                statePost.id!==post.id
+            )
+            renderPosts()
+            deletePostFromServer(post.id)
+    })
 
     const commentsUl = document.createElement("ul");
     commentsUl.setAttribute("class", "comments");
@@ -79,13 +98,13 @@ function createPost(post){
     commentBtn.setAttribute('type','submit')
     commentBtn.textContent = 'Post'
     for(let comment of post.comments){
-        createComment(comment,commentsUl)
+        createComment(comment,commentsUl,post)
     }
 
 
     imageCardArticle.append(titleH2, postImg, likesSectionDiv, commentsUl,commentForm)
     commentForm.append(commentInput,commentBtn)
-    likesSectionDiv.append(likesSpan, likeButton);
+    likesSectionDiv.append(likesSpan, likeButton,dltBtn);
     postSection.append(imageCardArticle)
 }
 
@@ -112,4 +131,14 @@ function postCommentOnServer(content,imageId){
                 imageId
               })
         })
+}
+function deletePostFromServer(postId){
+    fetch('http://localhost:3000/images/'+postId,{
+        method:'DELETE',
+    })
+}
+function deleteCommentFromServer(commentId){
+    fetch('http://localhost:3000/comments/'+commentId,{
+        method:'DELETE',
+    })
 }

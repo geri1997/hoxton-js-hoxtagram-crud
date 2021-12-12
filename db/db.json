@@ -3,7 +3,7 @@
     {
       "id": 1,
       "title": "Codera dog",
-      "likes": 35,
+      "likes": 36,
       "image": "./assets/coder-dog.png"
     },
     {
@@ -33,11 +33,6 @@
       "imageId": 1,
       "content": "Funny dog!!",
       "id": 4
-    },
-    {
-      "imageId": 1,
-      "content": "Hes a good boy!!",
-      "id": 5
     },
     {
       "content": "test1",
